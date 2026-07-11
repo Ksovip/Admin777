@@ -288,6 +288,16 @@
             document.getElementById('expiry').value = date.toISOString().split('T')[0];
         };
 
+        window.deleteUser = async (id) => {
+            if(!confirm("ဒီအသုံးပြုသူကို ဖျက်မှာ သေချာပါသလား?")) return;
+            try {
+                await deleteDoc(doc(db, "users", id));
+            } catch (err) {
+                alert("ဖျက်ရာတွင် အမှားရှိနေပါသည်။");
+                console.error(err);
+            }
+        };
+
         window.fillForm = (id, name, exp) => {
             document.getElementById('docId').value = id;
             document.getElementById('username').value = name;
@@ -376,7 +386,7 @@
                     <div class="user-actions">
                         <button class="btn-s" style="background:#3b82f6" onclick="window.fillForm('${u.id}','${u.username}','${u.expiryDate}')"><i class="fas fa-edit"></i></button>
                         <button class="btn-s" style="background:#22c55e" onclick="window.downloadSlip('${u.id}','${u.username}','${u.expiryDate}')"><i class="fas fa-download"></i></button>
-                        <button class="btn-s" style="background:#f43f5e" onclick="deleteDoc(doc(db, 'users', '${u.id}'))"><i class="fas fa-trash"></i></button>
+                        <button class="btn-s" style="background:#f43f5e" onclick="window.deleteUser('${u.id}')"><i class="fas fa-trash"></i></button>
                     </div>`;
                 container.appendChild(div);
             });
